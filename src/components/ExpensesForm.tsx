@@ -1,8 +1,12 @@
+import { addExpense } from '@/actions/actions'
 import React from 'react'
 
 export default function ExpensesForm() {
     return (
-        <form className='w-full mt-8 rounded overflow-hidden'>
+        <form
+            action={addExpense}
+            className='w-full mt-8 rounded overflow-hidden'
+        >
             <input
                 type="text"
                 name="description"
