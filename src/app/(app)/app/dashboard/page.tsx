@@ -1,9 +1,29 @@
 import prisma from '@/lib/db';
 import ExpensesForm from "@/components/ExpensesForm";
 import ExpensesList from "@/components/ExpensesList";
+import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
+import { redirect } from 'next/navigation';
 
 export default async function Dashboard() {
-    const expenses = await prisma.expense.findMany();
+    // Auth check
+    const { isAuthenticated, getUser } = getKindeServerSession();
+
+    if (!(await isAuthenticated())) {
+        return redirect('/api/auth/login');
+    }
+
+    const user = await getUser();
+    console.log('🚀 ~ Dashboard ~ user:', user)
+
+    if (!user) {
+        throw new Error("User not found");
+    }
+
+    const expenses = await prisma.expense.findMany({
+        where: {
+            creatorId: user.id
+        }
+    });
 
     return (
         <div>
