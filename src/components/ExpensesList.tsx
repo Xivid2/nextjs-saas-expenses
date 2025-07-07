@@ -7,6 +7,7 @@ interface ExpensesListProps {
         id: number;
         description: string;
         amount: number;
+        creatorId: string;
         createdAt: Date;
     }[];
 }
